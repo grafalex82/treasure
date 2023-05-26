@@ -17,7 +17,7 @@ class Player:
     def get_pos(self):
         return self._pos
 
-    
+
     def _on_surface(self):
         if self._game.is_ladder(self._pos):
             return True
@@ -37,16 +37,17 @@ class Player:
             self._try_move(self._pos.left())
         if keys[pygame.K_RIGHT]:
             self._try_move(self._pos.right())
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_UP] and self._game.is_ladder(self._pos):
             self._try_move(self._pos.above())
         if keys[pygame.K_DOWN]:
             self._try_move(self._pos.below())
 
 
     def _handle_falling(self):
-        self._tick += 1
-        if self._tick % 4 != 0:
-            self._pos = self._pos.below()
+        self._tick += 1                     
+
+        if self._tick % 4 != 0:                 # Player falls 3 of 4 ticks 
+            self._pos = self._pos.below()       # (compared to enemies which fall faster)
 
 
     def _update_position(self):
