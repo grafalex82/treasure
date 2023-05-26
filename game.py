@@ -42,7 +42,7 @@ class Game:
         for y in range(ROWS):
             for x in range(COLS):
                 bt = self._game[x][y]
-                screen.blit(self._block_types[bt], (x*SIZE, y*SIZE))
+                screen.blit(self._block_types[bt], (x*CELL_WIDTH, y*CELL_HEIGHT))
 
 
 

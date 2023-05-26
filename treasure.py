@@ -11,13 +11,13 @@ def main():
     maps = [Map(f"{resources_dir}/map_{i:02}.bin") for i in range(1, 20)]
     current_map = 0
 
-    screen = pygame.display.set_mode((COLS*SIZE, ROWS*SIZE))
+    screen = pygame.display.set_mode((COLS*CELL_WIDTH, ROWS*CELL_HEIGHT))
     clock = pygame.time.Clock()
 
     game = Game(maps[current_map])
 
     while True:
-        screen.fill(pygame.Color('grey'))
+        screen.fill(pygame.Color('black'))
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
