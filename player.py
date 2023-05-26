@@ -23,8 +23,21 @@ class Player:
         return not self._game.is_block_empty(self._pos.below())
 
 
+    def _try_move(self, new_pos):
+        if self._game.is_block_empty(new_pos) or \
+           self._game.is_ladder(new_pos):
+            self._pos = new_pos
+
     def _handle_keypress(self):
-        pass
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            self._try_move(self._pos.left())
+        if keys[pygame.K_RIGHT]:
+            self._try_move(self._pos.right())
+        if keys[pygame.K_UP]:
+            self._try_move(self._pos.above())
+        if keys[pygame.K_DOWN]:
+            self._try_move(self._pos.below())
 
     def _handle_falling(self):
         self._tick += 1

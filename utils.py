@@ -17,3 +17,8 @@ class Pos:
     def above(self):
         return Pos(self._x, self._y - 1)
 
+    def left(self):
+        return Pos(self._x - 1, self._y)
+
+    def right(self):
+        return Pos(self._x + 1, self._y)
