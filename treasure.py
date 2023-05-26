@@ -22,6 +22,11 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_PERIOD:
+                    current_map += 1
+                    current_map %= 19
+                    game = Game(maps[current_map])    
 
         game.update(screen)
         pygame.display.flip()
