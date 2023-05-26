@@ -14,8 +14,13 @@ BLOCK_DOOR_LEFT     = 0x03
 BLOCK_DOOR_RIGHT    = 0x04
 BLOCK_WATER         = 0x05
 BLOCK_THIN_FLOOR    = 0x06
+BLOCK_EMPTY_BOX     = 0x07
+BLOCK_TREASURE      = 0x08
+BLOCK_LCK_DOOR_LEFT = 0x09
+BLOCK_LCK_DOOR_RIGHT= 0x0a
 BLOCK_BRICK         = 0x0b
 BLOCK_DOOR_OPEN     = 0x11
+BLOCK_REWARD        = 0x12
 
 
 class Game:
@@ -28,6 +33,7 @@ class Game:
                 self._game[x][y] = self._map.get_block_type(x, y)
 
         self._player = Player(self._map.get_player_pos(), self)
+        self._treasures_found = 0
 
         self._block_empty = pygame.image.load(f"{resources_dir}/block_empty.png")
         self._block_empty2 = pygame.image.load(f"{resources_dir}/block_empty2.png")
@@ -47,6 +53,7 @@ class Game:
         self._block_door_left = pygame.image.load(f"{resources_dir}/block_door_left.png")
         self._block_door_right = pygame.image.load(f"{resources_dir}/block_door_right.png")
         self._block_door_open = pygame.image.load(f"{resources_dir}/block_door_open.png")
+        self._block_reward = pygame.image.load(f"{resources_dir}/block_reward.png")
 
         self._block_types = [
             (self._block_empty,      True),     # 00
@@ -67,7 +74,7 @@ class Game:
             (None,                   True),     # 0f
             (None,                   True),     # 10
             (self._block_door_open,  True),     # 11
-            (None,                   True),     # 12
+            (self._block_reward,     True),     # 12
             (None,                   True),     # 13
             (None,                   True),     # 14
             (None,                   True),     # 15
@@ -99,13 +106,38 @@ class Game:
         return self._game[pos.x][pos.y] == BLOCK_THIN_FLOOR
 
 
+    def is_empty_box(self, pos):
+        return self._game[pos.x][pos.y] == BLOCK_EMPTY_BOX
+
+
+    def is_treasure(self, pos):
+        return self._game[pos.x][pos.y] == BLOCK_TREASURE
+    
+
     def open_left_door(self, pos):
         if self._game[pos.x][pos.y] == BLOCK_DOOR_LEFT:
             self._game[pos.x][pos.y] = BLOCK_DOOR_OPEN
 
+        if self._game[pos.x][pos.y] == BLOCK_LCK_DOOR_LEFT and self._treasures_found > 0:
+            self._game[pos.x][pos.y] = BLOCK_DOOR_OPEN
+
+
     def open_right_door(self, pos):
         if self._game[pos.x][pos.y] == BLOCK_DOOR_RIGHT:
             self._game[pos.x][pos.y] = BLOCK_DOOR_OPEN
+
+        if self._game[pos.x][pos.y] == BLOCK_LCK_DOOR_RIGHT and self._treasures_found > 0:
+            self._game[pos.x][pos.y] = BLOCK_DOOR_OPEN
+
+
+    def _handle_treasures(self):
+        pos = self._player.get_pos()
+        if self.is_empty_box(pos):
+            self._game[pos.x][pos.y] = BLOCK_EMPTY
+
+        if self.is_treasure(self._player.get_pos()):
+            self._treasures_found += 1
+            self._game[pos.x][pos.y] = BLOCK_REWARD
 
 
     def _get_block_image(self, block_type):
@@ -120,6 +152,7 @@ class Game:
                 screen.blit(self._get_block_image(bt), (x*CELL_WIDTH, y*CELL_HEIGHT))
 
         self._player.update(screen)
+        self._handle_treasures()
         
 
     def is_game_over(self):
