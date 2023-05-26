@@ -2,6 +2,7 @@ import os
 import pygame
 
 from config import *
+from player import Player
 
 resources_dir = os.path.join(os.path.dirname(__file__), "resources")
 
@@ -14,9 +15,7 @@ class Game:
             for y in range(ROWS):
                 self._game[x][y] = self._map.get_block_type(x, y)
 
-        self._player_pos = self._map.get_player_pos()
-
-        self._block_player = pygame.image.load(f"{resources_dir}/block_player.png")
+        self._player = Player(self._map.get_player_pos())
 
         self._block_empty = pygame.image.load(f"{resources_dir}/block_empty.png")
         self._block_empty2 = pygame.image.load(f"{resources_dir}/block_empty2.png")
@@ -77,7 +76,6 @@ class Game:
                 bt = self._game[x][y]
                 screen.blit(self._block_types[bt], (x*CELL_WIDTH, y*CELL_HEIGHT))
 
-        # Draw the player
-        screen.blit(self._block_player, (self._player_pos[0]*CELL_WIDTH, self._player_pos[1]*CELL_HEIGHT))
+        self._player.update(screen)
 
 
