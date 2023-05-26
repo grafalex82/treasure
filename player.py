@@ -22,6 +22,9 @@ class Player:
         if self._game.is_ladder(self._pos):
             return True
         
+        if self._game.is_thin_floor(self._pos.below()) and not self._falling:
+            return True
+
         return not self._game.is_block_empty(self._pos.below())
 
 
@@ -46,8 +49,11 @@ class Player:
     def _handle_falling(self):
         self._tick += 1                     
 
-        if self._tick % 4 != 0:                 # Player falls 3 of 4 ticks 
-            self._pos = self._pos.below()       # (compared to enemies which fall faster)
+        # Player falls 3 of 4 ticks (compared to enemies which fall faster)
+        if self._tick % 4 == 0:
+            return
+                         
+        self._pos = self._pos.below()
 
 
     def _update_position(self):

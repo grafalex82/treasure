@@ -51,12 +51,12 @@ class Game:
             (self._block_door_left,  False),    # 03
             (self._block_door_right, False),    # 04
             (self._block_water,      True),     # 05
-            (self._block_thin_floor, False),     # 06
+            (self._block_thin_floor, True),     # 06
             (self._block_treasure,   True),     # 07
             (self._block_treasure,   True),     # 08            
-            (self._block_door_left,  False),     # 09
-            (self._block_door_right, False),     # 0a
-            (self._block_brick,      False),     # 0b
+            (self._block_door_left,  False),    # 09
+            (self._block_door_right, False),    # 0a
+            (self._block_brick,      False),    # 0b
             (None,                   True),     # 0c
             (None,                   True),     # 0d
             (self._block_empty2,     True),     # 0e
@@ -89,6 +89,10 @@ class Game:
 
     def is_ladder(self, pos):
         return self._game[pos.x][pos.y] == BLOCK_LADDER
+
+
+    def is_thin_floor(self, pos):
+        return self._game[pos.x][pos.y] == BLOCK_THIN_FLOOR
 
 
     def _get_block_image(self, block_type):
