@@ -26,7 +26,9 @@ class Map:
 
         offset += 1
         self._player_pos = Pos(data[offset+1], data[offset])
-        # TODO: load map metadata
+        # TODO: load ememy positions
+        offset += 11
+        self._exit_pos = Pos(data[offset+1], data[offset])
 
 
     def get_block_type(self, x, y):
@@ -35,3 +37,7 @@ class Map:
 
     def get_player_pos(self):
         return self._player_pos
+    
+
+    def get_exit_pos(self):
+        return self._exit_pos

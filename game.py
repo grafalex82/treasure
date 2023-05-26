@@ -109,3 +109,5 @@ class Game:
         return self.get_block_type(self._player.get_pos()) == BLOCK_WATER
 
 
+    def is_player_reached_exit(self):
+        return self._player.get_pos() == self._map.get_exit_pos()
