@@ -14,6 +14,10 @@ class Game:
             for y in range(ROWS):
                 self._game[x][y] = self._map.get_block_type(x, y)
 
+        self._player_pos = self._map.get_player_pos()
+
+        self._block_player = pygame.image.load(f"{resources_dir}/block_player.png")
+
         self._block_empty = pygame.image.load(f"{resources_dir}/block_empty.png")
         self._block_empty2 = pygame.image.load(f"{resources_dir}/block_empty2.png")
         self._block_empty3 = pygame.image.load(f"{resources_dir}/block_empty3.png")
@@ -67,10 +71,13 @@ class Game:
 
 
     def update(self, screen):
+        # Draw blocks
         for y in range(ROWS):
             for x in range(COLS):
                 bt = self._game[x][y]
                 screen.blit(self._block_types[bt], (x*CELL_WIDTH, y*CELL_HEIGHT))
 
+        # Draw the player
+        screen.blit(self._block_player, (self._player_pos[0]*CELL_WIDTH, self._player_pos[1]*CELL_HEIGHT))
 
 

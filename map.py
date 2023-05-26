@@ -23,8 +23,14 @@ class Map:
                 for y in range(y1, y2+1):
                     self._map[x][y] = block_type
 
+        offset += 1
+        self._player_pos = (data[offset+1], data[offset])
         # TODO: load map metadata
 
 
     def get_block_type(self, x, y):
         return self._map[x][y]
+    
+
+    def get_player_pos(self):
+        return self._player_pos
