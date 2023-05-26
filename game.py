@@ -10,9 +10,12 @@ resources_dir = os.path.join(os.path.dirname(__file__), "resources")
 BLOCK_EMPTY         = 0x00
 BLOCK_CONCRETE      = 0x01
 BLOCK_LADDER        = 0x02
+BLOCK_DOOR_LEFT     = 0x03
+BLOCK_DOOR_RIGHT    = 0x04
 BLOCK_WATER         = 0x05
 BLOCK_THIN_FLOOR    = 0x06
 BLOCK_BRICK         = 0x0b
+BLOCK_DOOR_OPEN     = 0x11
 
 
 class Game:
@@ -43,6 +46,7 @@ class Game:
         self._block_treasure = pygame.image.load(f"{resources_dir}/block_treasure.png")
         self._block_door_left = pygame.image.load(f"{resources_dir}/block_door_left.png")
         self._block_door_right = pygame.image.load(f"{resources_dir}/block_door_right.png")
+        self._block_door_open = pygame.image.load(f"{resources_dir}/block_door_open.png")
 
         self._block_types = [
             (self._block_empty,      True),     # 00
@@ -62,7 +66,7 @@ class Game:
             (self._block_empty2,     True),     # 0e
             (None,                   True),     # 0f
             (None,                   True),     # 10
-            (None,                   True),     # 11
+            (self._block_door_open,  True),     # 11
             (None,                   True),     # 12
             (None,                   True),     # 13
             (None,                   True),     # 14
@@ -93,6 +97,15 @@ class Game:
 
     def is_thin_floor(self, pos):
         return self._game[pos.x][pos.y] == BLOCK_THIN_FLOOR
+
+
+    def open_left_door(self, pos):
+        if self._game[pos.x][pos.y] == BLOCK_DOOR_LEFT:
+            self._game[pos.x][pos.y] = BLOCK_DOOR_OPEN
+
+    def open_right_door(self, pos):
+        if self._game[pos.x][pos.y] == BLOCK_DOOR_RIGHT:
+            self._game[pos.x][pos.y] = BLOCK_DOOR_OPEN
 
 
     def _get_block_image(self, block_type):

@@ -34,11 +34,21 @@ class Player:
             self._pos = new_pos
 
 
+    def _try_open_left_door(self, pos):
+        self._game.open_left_door(pos)
+
+
+    def _try_open_right_door(self, pos):
+        self._game.open_right_door(pos)
+
+        
     def _handle_keypress(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
+            self._try_open_left_door(self._pos.left())
             self._try_move(self._pos.left())
         if keys[pygame.K_RIGHT]:
+            self._try_open_right_door(self._pos.right())
             self._try_move(self._pos.right())
         if keys[pygame.K_UP] and self._game.is_ladder(self._pos):
             self._try_move(self._pos.above())
