@@ -10,6 +10,7 @@ resources_dir = os.path.join(os.path.dirname(__file__), "resources")
 BLOCK_EMPTY         = 0x00
 BLOCK_CONCRETE      = 0x01
 BLOCK_LADDER        = 0x02
+BLOCK_WATER         = 0x05
 BLOCK_THIN_FLOOR    = 0x06
 BLOCK_BRICK         = 0x0b
 
@@ -102,5 +103,9 @@ class Game:
                 screen.blit(self._get_block_image(bt), (x*CELL_WIDTH, y*CELL_HEIGHT))
 
         self._player.update(screen)
+        
+
+    def is_game_over(self):
+        return self.get_block_type(self._player.get_pos()) == BLOCK_WATER
 
 

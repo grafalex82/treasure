@@ -28,6 +28,9 @@ def main():
                     current_map %= 19
                     game = Game(maps[current_map])    
 
+        if game.is_game_over():
+            game = Game(maps[current_map])    
+
         game.update(screen)
         pygame.display.flip()
         clock.tick(4)

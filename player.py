@@ -12,9 +12,11 @@ class Player:
         self._pos = pos
         self._falling = False
         self._tick = 0
-        
+
+
     def get_pos(self):
         return self._pos
+
     
     def _on_surface(self):
         if self._game.is_ladder(self._pos):
@@ -28,6 +30,7 @@ class Player:
            self._game.is_ladder(new_pos):
             self._pos = new_pos
 
+
     def _handle_keypress(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
@@ -39,10 +42,12 @@ class Player:
         if keys[pygame.K_DOWN]:
             self._try_move(self._pos.below())
 
+
     def _handle_falling(self):
         self._tick += 1
         if self._tick % 4 != 0:
             self._pos = self._pos.below()
+
 
     def _update_position(self):
         if self._on_surface():
