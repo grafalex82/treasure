@@ -1,4 +1,5 @@
 from config import *
+from utils import *
 
 class Map:
     def __init__(self, filename):
@@ -24,7 +25,7 @@ class Map:
                     self._map[x][y] = block_type
 
         offset += 1
-        self._player_pos = (data[offset+1], data[offset])
+        self._player_pos = Pos(data[offset+1], data[offset])
         # TODO: load map metadata
 
 

@@ -3,8 +3,16 @@ import pygame
 
 from config import *
 from player import Player
+from utils import *
 
 resources_dir = os.path.join(os.path.dirname(__file__), "resources")
+
+BLOCK_EMPTY         = 0x00
+BLOCK_CONCRETE      = 0x01
+BLOCK_LADDER        = 0x02
+BLOCK_THIN_FLOOR    = 0x06
+BLOCK_BRICK         = 0x0b
+
 
 class Game:
     def __init__(self, m):
@@ -15,7 +23,7 @@ class Game:
             for y in range(ROWS):
                 self._game[x][y] = self._map.get_block_type(x, y)
 
-        self._player = Player(self._map.get_player_pos())
+        self._player = Player(self._map.get_player_pos(), self)
 
         self._block_empty = pygame.image.load(f"{resources_dir}/block_empty.png")
         self._block_empty2 = pygame.image.load(f"{resources_dir}/block_empty2.png")
@@ -36,45 +44,62 @@ class Game:
         self._block_door_right = pygame.image.load(f"{resources_dir}/block_door_right.png")
 
         self._block_types = [
-            self._block_empty,      # 00
-            self._concrete_empty,   # 01
-            self._ladder_empty,     # 02
-            self._block_door_left,  # 03
-            self._block_door_right, # 04
-            self._block_water,      # 05
-            self._block_thin_floor, # 06
-            self._block_treasure,   # 07
-            self._block_treasure,   # 08            
-            self._block_door_left,  # 09
-            self._block_door_right, # 0a
-            self._block_brick,      # 0b
-            None,                   # 0c
-            None,                   # 0d
-            self._block_empty2,     # 0e
-            None,                   # 0f
-            None,                   # 10
-            None,                   # 11
-            None,                   # 12
-            None,                   # 13
-            None,                   # 14
-            None,                   # 15
-            None,                   # 16
-            self._block_empty3,     # 17
-            self._block_empty4,     # 18
-            self._block_empty5,     # 19
-            self._block_empty6,     # 1a
-            self._block_empty7,     # 1b
-            self._block_empty8,     # 1c
-            self._block_empty9,     # 1d
+            (self._block_empty,      True),     # 00
+            (self._concrete_empty,   False),    # 01
+            (self._ladder_empty,     False),    # 02
+            (self._block_door_left,  False),    # 03
+            (self._block_door_right, False),    # 04
+            (self._block_water,      True),     # 05
+            (self._block_thin_floor, False),     # 06
+            (self._block_treasure,   True),     # 07
+            (self._block_treasure,   True),     # 08            
+            (self._block_door_left,  False),     # 09
+            (self._block_door_right, False),     # 0a
+            (self._block_brick,      False),     # 0b
+            (None,                   True),     # 0c
+            (None,                   True),     # 0d
+            (self._block_empty2,     True),     # 0e
+            (None,                   True),     # 0f
+            (None,                   True),     # 10
+            (None,                   True),     # 11
+            (None,                   True),     # 12
+            (None,                   True),     # 13
+            (None,                   True),     # 14
+            (None,                   True),     # 15
+            (None,                   True),     # 16
+            (self._block_empty3,     True),     # 17
+            (self._block_empty4,     True),     # 18
+            (self._block_empty5,     True),     # 19
+            (self._block_empty6,     True),     # 1a
+            (self._block_empty7,     True),     # 1b
+            (self._block_empty8,     True),     # 1c
+            (self._block_empty9,     True),     # 1d
         ]
+
+
+    def get_block_type(self, pos):
+        return self._game[pos.x][pos.y]
+
+
+    def is_block_empty(self, pos):
+        bt = self._game[pos.x][pos.y]
+        return self._block_types[bt][1]
+
+
+    def is_ladder(self, pos):
+        return self._game[pos.x][pos.y] == BLOCK_LADDER
+
+
+    def _get_block_image(self, block_type):
+        return self._block_types[block_type][0]
 
 
     def update(self, screen):
         # Draw blocks
         for y in range(ROWS):
             for x in range(COLS):
-                bt = self._game[x][y]
-                screen.blit(self._block_types[bt], (x*CELL_WIDTH, y*CELL_HEIGHT))
+                bt = self.get_block_type(Pos(x, y))
+                screen.blit(self._get_block_image(bt), (x*CELL_WIDTH, y*CELL_HEIGHT))
 
         self._player.update(screen)
 
