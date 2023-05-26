@@ -1,3 +1,5 @@
 COLS = 64
 ROWS = 25
 
+SIZE = 16
+
