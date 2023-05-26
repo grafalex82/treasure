@@ -43,7 +43,8 @@ class Player:
         if keys[pygame.K_UP] and self._game.is_ladder(self._pos):
             self._try_move(self._pos.above())
         if keys[pygame.K_DOWN]:
-            self._try_move(self._pos.below())
+            if not self._game.is_thin_floor(self._pos.below()):
+                self._try_move(self._pos.below())
 
 
     def _handle_falling(self):
