@@ -130,6 +130,14 @@ class Game:
             self._game[pos.x][pos.y] = BLOCK_DOOR_OPEN
 
 
+    def hit_arrow(self, pos):
+        # Concrete stops the arrow, but does not change the map
+        if self._game[pos.x][pos.y] == BLOCK_CONCRETE:
+            return True
+        
+
+        return False
+
     def _handle_treasures(self):
         pos = self._player.get_pos()
         if self.is_empty_box(pos):
@@ -138,6 +146,7 @@ class Game:
         if self.is_treasure(self._player.get_pos()):
             self._treasures_found += 1
             self._game[pos.x][pos.y] = BLOCK_REWARD
+
 
 
     def _get_block_image(self, block_type):
@@ -161,3 +170,4 @@ class Game:
 
     def is_player_reached_exit(self):
         return self._player.get_pos() == self._map.get_exit_pos()
+    

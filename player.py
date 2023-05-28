@@ -1,6 +1,7 @@
 from config import *
 from game import *
 from utils import *
+from arrow import *
 
 resources_dir = os.path.join(os.path.dirname(__file__), "resources")
 
@@ -12,6 +13,9 @@ class Player:
         self._pos = pos
         self._falling = False
         self._tick = 0
+
+        self._left_arrow = None
+        self._right_arrow = None
 
 
     def get_pos(self):
@@ -57,6 +61,20 @@ class Player:
                 self._try_move(self._pos.below())
 
 
+    def _handle_arrows(self, screen):
+        if self._left_arrow:
+            if self._left_arrow.update(screen):
+                self._left_arrow = None
+        elif pygame.key.get_pressed()[pygame.K_q]:
+            self._left_arrow = Arrow(self._pos, False, self._game)
+
+        if self._right_arrow:
+            if self._right_arrow.update(screen):
+                self._right_arrow = None
+        elif pygame.key.get_pressed()[pygame.K_w]:
+            self._right_arrow = Arrow(self._pos, True, self._game)
+
+
     def _handle_falling(self):
         self._tick += 1                     
 
@@ -78,6 +96,7 @@ class Player:
 
     def update(self, screen):
         self._update_position()
+        self._handle_arrows(screen)
 
         screen.blit(self._block_player, (self._pos.x*CELL_WIDTH, self._pos.y*CELL_HEIGHT))
 
