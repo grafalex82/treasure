@@ -4,6 +4,7 @@ import pygame
 from config import *
 from player import Player
 from utils import *
+from enemy import Enemy
 
 resources_dir = os.path.join(os.path.dirname(__file__), "resources")
 
@@ -40,6 +41,8 @@ class Game:
         self._player = Player(self._map.get_player_pos(), self)
         self._treasures_found = 0
         self._destroyed_bricks = {}
+
+        self._enemies = [Enemy(pos, self) for pos in m.get_enemy_positions()]
 
         self._block_empty = pygame.image.load(f"{resources_dir}/block_empty.png")
         self._block_empty2 = pygame.image.load(f"{resources_dir}/block_empty2.png")
@@ -198,6 +201,9 @@ class Game:
         self._player.update(screen)
         self._handle_treasures()
         self._handle_bricks()
+
+        for e in self._enemies:
+            e.update(screen)
         
 
     def is_game_over(self):

@@ -26,7 +26,12 @@ class Map:
 
         offset += 1
         self._player_pos = Pos(data[offset+1], data[offset])
-        # TODO: load ememy positions
+
+        enemy_count = 1 if data[offset+10] == 0 else data[offset+10]
+        self._enemies_pos = []
+        for enemy in range(enemy_count):
+            self._enemies_pos.append(Pos(data[offset + 3 + enemy*2], data[offset + 2 + enemy*2]))
+        
         offset += 11
         self._exit_pos = Pos(data[offset+1], data[offset])
 
@@ -41,3 +46,7 @@ class Map:
 
     def get_exit_pos(self):
         return self._exit_pos
+
+
+    def get_enemy_positions(self):
+        return self._enemies_pos
