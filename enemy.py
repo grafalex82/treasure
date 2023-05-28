@@ -80,7 +80,7 @@ class Enemy:
 
 
     def _handle_falling(self):
-        self._pos = self._pos.below()
+        self._move(self._pos.below())
 
 
     def _update_position(self):
