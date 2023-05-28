@@ -213,3 +213,15 @@ class Game:
     def is_player_reached_exit(self):
         return self._player.get_pos() == self._map.get_exit_pos()
     
+
+    def get_player_pos(self):
+        return self._player.get_pos()
+    
+
+    def is_enemy_on_pos(self, pos):
+        for e in self._enemies:
+            if e.get_pos() == pos:
+                return True
+            
+        return False
+    

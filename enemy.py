@@ -14,6 +14,10 @@ class Enemy:
         self._block_enemy = pygame.image.load(f"{resources_dir}/block_enemy.png")
 
 
+    def get_pos(self):
+        return self._pos
+    
+
     def _on_surface(self):
         if self._game.is_ladder(self._pos):
             return True
@@ -27,7 +31,22 @@ class Enemy:
     def _try_move(self, new_pos):
         if self._game.is_block_empty(new_pos) or \
            self._game.is_ladder(new_pos):
-            self._pos = new_pos
+            if not self._game.is_enemy_on_pos(new_pos):
+                self._pos = new_pos
+
+
+    def _try_reach_player(self):
+        # Enemy runs 3 of 4 ticks (compared to player that moves faster)
+        if (self._tick / 2) % 4 == 0:
+            return
+        
+        player_pos = self._game.get_player_pos()
+
+        # Try matching X position first
+        if player_pos.x > self._pos.x:
+            self._try_move(self._pos.right())
+        elif player_pos.x < self._pos.x:
+            self._try_move(self._pos.left())
 
 
     def _handle_falling(self):
@@ -37,6 +56,7 @@ class Enemy:
     def _update_position(self):
         if self._on_surface():
             self._falling = False
+            self._try_reach_player()
         else:
             self._falling = True
             self._handle_falling()
