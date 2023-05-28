@@ -6,10 +6,13 @@ resources_dir = os.path.join(os.path.dirname(__file__), "resources")
 class Enemy:
     def __init__(self, pos, game):
         self._pos = pos
+        self._original_pos = pos
         self._game = game
 
         self._falling = False
         self._tick = 0
+
+        self._respawn_counter = 0
 
         self._block_enemy = pygame.image.load(f"{resources_dir}/block_enemy.png")
 
@@ -17,6 +20,20 @@ class Enemy:
     def get_pos(self):
         return self._pos
     
+
+    def _die(self):
+        self._respawn_counter = 100 # 50 full game ticks in original game, but our ticks runs twice faster
+
+
+    def _is_dead(self):
+        return self._respawn_counter > 0
+    
+
+    def _handle_respawn(self):
+        self._respawn_counter -= 1
+        if self._respawn_counter == 0:
+            self._pos = self._original_pos
+
 
     def _on_surface(self):
         if self._game.is_ladder(self._pos):
@@ -33,6 +50,9 @@ class Enemy:
            self._game.is_ladder(new_pos):
             if not self._game.is_enemy_on_pos(new_pos):
                 self._pos = new_pos
+
+        if self._game.is_water(self._pos):
+            self._die()
 
 
     def _try_reach_player(self):
@@ -64,10 +84,14 @@ class Enemy:
 
     def update(self, screen):
         self._tick += 1                     
+        
+        if self._is_dead():
+            self._handle_respawn()
+        else:
+            # Enemies move twice slower than the arrow
+            if self._tick % 2 == 0: 
+                self._update_position()
 
-        # Enemies move twice slower than the arrow
-        if self._tick % 2 == 0: 
-            self._update_position()
-
-        screen.blit(self._block_enemy, (self._pos.x*CELL_WIDTH, self._pos.y*CELL_HEIGHT))
+            if not self._is_dead():
+                screen.blit(self._block_enemy, (self._pos.x*CELL_WIDTH, self._pos.y*CELL_HEIGHT))
 

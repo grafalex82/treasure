@@ -117,6 +117,10 @@ class Game:
         return self._game[pos.x][pos.y] == BLOCK_THIN_FLOOR
 
 
+    def is_water(self, pos):
+        return self._game[pos.x][pos.y] == BLOCK_WATER
+
+
     def is_empty_box(self, pos):
         return self._game[pos.x][pos.y] == BLOCK_EMPTY_BOX
 
