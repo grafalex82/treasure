@@ -45,11 +45,16 @@ class Enemy:
         return not self._game.is_block_empty(self._pos.below())
 
 
-    def _try_move(self, new_pos):
+    def _can_move(self, new_pos):
         if self._game.is_block_empty(new_pos) or \
            self._game.is_ladder(new_pos):
-            if not self._game.is_enemy_on_pos(new_pos):
-                self._pos = new_pos
+            return not self._game.is_enemy_on_pos(new_pos)
+        
+        return False
+
+
+    def _move(self, new_pos):
+        self._pos = new_pos
 
         if self._game.is_water(self._pos):
             self._die()
@@ -63,10 +68,15 @@ class Enemy:
         player_pos = self._game.get_player_pos()
 
         # Try matching X position first
-        if player_pos.x > self._pos.x:
-            self._try_move(self._pos.right())
-        elif player_pos.x < self._pos.x:
-            self._try_move(self._pos.left())
+        if player_pos.x > self._pos.x and self._can_move(self._pos.right()):
+            self._move(self._pos.right())
+        elif player_pos.x < self._pos.x and self._can_move(self._pos.left()):
+            self._move(self._pos.left())
+        # Try matchinf Y position next]
+        elif player_pos.y < self._pos.y and self._can_move(self._pos.above()):
+            self._move(self._pos.above())
+        elif player_pos.y > self._pos.y and self._can_move(self._pos.below()):
+            self._move(self._pos.below())
 
 
     def _handle_falling(self):
