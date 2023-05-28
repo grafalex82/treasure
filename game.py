@@ -21,6 +21,7 @@ BLOCK_LCK_DOOR_RIGHT= 0x0a
 BLOCK_BRICK         = 0x0b
 BLOCK_BRICK_BROKEN1 = 0x0c
 BLOCK_BRICK_BROKEN2 = 0x0d
+BLOCK_BRICK_BROKEN3 = 0x0e
 BLOCK_BRICK_RESTOR1 = 0x0f
 BLOCK_BRICK_RESTOR2 = 0x10
 BLOCK_DOOR_OPEN     = 0x11
@@ -38,6 +39,7 @@ class Game:
 
         self._player = Player(self._map.get_player_pos(), self)
         self._treasures_found = 0
+        self._destroyed_bricks = {}
 
         self._block_empty = pygame.image.load(f"{resources_dir}/block_empty.png")
         self._block_empty2 = pygame.image.load(f"{resources_dir}/block_empty2.png")
@@ -144,6 +146,7 @@ class Game:
         # Bricks are destroyed 1 degree on arrow hits
         if self._game[pos.x][pos.y] >= BLOCK_BRICK and self._game[pos.x][pos.y] <= BLOCK_BRICK_BROKEN2:
             self._game[pos.x][pos.y] += 1
+            self._destroyed_bricks[pos] = 20    # TODO Put correct number of ticks here
             return True
 
         return False
@@ -157,6 +160,27 @@ class Game:
         if self.is_treasure(self._player.get_pos()):
             self._treasures_found += 1
             self._game[pos.x][pos.y] = BLOCK_REWARD
+
+
+    def _handle_bricks(self):
+        for pos, counter in self._destroyed_bricks.items():
+            counter -= 1
+            self._destroyed_bricks[pos] = counter
+
+            bt = self._game[pos.x][pos.y]
+
+            if counter == 0:
+                if bt == BLOCK_BRICK_BROKEN1 or bt == BLOCK_BRICK_RESTOR2:
+                    self._game[pos.x][pos.y] = BLOCK_BRICK
+                    del self._destroyed_bricks[pos]
+                    break
+
+                if bt == BLOCK_BRICK_BROKEN2:
+                    self._game[pos.x][pos.y] += -1
+                else:
+                    self._game[pos.x][pos.y] += +1
+
+                self._destroyed_bricks[pos] = 20    # TODO Put the correct value here
 
 
 
@@ -173,6 +197,7 @@ class Game:
 
         self._player.update(screen)
         self._handle_treasures()
+        self._handle_bricks()
         
 
     def is_game_over(self):

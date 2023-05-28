@@ -14,6 +14,9 @@ class Pos:
     def __eq__(self, other):
         return self._x == other._x and self._y == other._y
     
+    def __hash__(self):
+        return hash((self._x, self._y))
+        
     def below(self):
         return Pos(self._x, self._y + 1)
     
