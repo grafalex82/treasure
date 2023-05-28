@@ -4,6 +4,8 @@ This is a port of Treasure (Russian: Клад) game, which is well known on [Rad
 
 The goal if the game is to find exit of each map. The Player has to find a way through the labyrinth of blocks, doors, and ladders, and not to fall into the water. Some doors are blocked, and require a treasure box to be found first. Most of the treasure boxes are empty, and Player has to find the one with a treasure. Enemies want to catch the Player, which makes the game quite challenging.
 
+![](doc/gamescreen.png)
+
 # Controls
 
 The player can be controlled with the arrow keys. 'Q' and 'W' keys will throw an arrow, that can be used to destroy bricks and open a path. Bricks are restored over time.
@@ -24,7 +26,9 @@ The following blocks exist in the game:
 
 # Why the game is so ugly?
 
-The original Treasure game that was released in 1987. The Radio-86RK computer had B/W monitor, that could display only text character (non graphical display). Each block was shown as a symbol. 
+The original Treasure game that was released in 1987. The Radio-86RK computer had B/W monitor, that could display only text character (non graphical display). Each block was shown as a different type of symbol. 
+
+![](doc/original.png)
 
 This port intentionally mimics all the features of the original game, including player and enemies movement one block at a time. Definitely, movements may be done much smoother, the graphics may be better, enemies could be smarter, but this would be another game.
 
