@@ -19,14 +19,14 @@ The following blocks exist in the game:
 - ![](resources/block_brick.png) - Brick, can be broken with arrow. Restores over time
 - ![](resources/block_ladder.png) - Ladder. Player and enemies may go up and down through the map using ladders.
 - ![](resources/block_water.png) - Water. Player dies when falls to the water. Enemies die as well, but respawn over time.
-- ![](resources/block_thin_floor.png) - Thin floor. Player and enemies can walk over the thin floor, but will fall through and falling from above
+- ![](resources/block_thin_floor.png) - Thin floor. Player and enemies can walk over the thin floor, but will fall through when falling from above
 - ![](resources/block_treasure.png) - Treasure box. Most of the boxes are empty, but if you are lucky you can find a treasure (![](resources/block_reward.png))
 - ![](resources/block_door_left.png) - Door. Will open when Player approaches from one side, but does not open from the other side. Some of the doors require treasure to be found first
 - Other type of blocks (![](resources/block_empty3.png), ![](resources/block_empty4.png), ![](resources/block_empty5.png), ![](resources/block_empty6.png), ![](resources/block_empty7.png), ![](resources/block_empty8.png), ![](resources/block_empty9.png)) are just empty blocks, and added to the game for variety.
 
 # Why the game is so ugly?
 
-The original Treasure game that was released in 1987. The Radio-86RK computer had B/W monitor, that could display only text character (non graphical display). Each block was shown as a different type of symbol. 
+The original Treasure game that was released in 1987. The Radio-86RK computer had B/W monitor, that could display only text characters (non graphical display). Each block was shown as a different type of symbol. 
 
 ![](doc/original.png)
 
