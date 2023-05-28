@@ -38,7 +38,7 @@ def main():
 
         game.update(screen)
         pygame.display.flip()
-        clock.tick(4)
+        clock.tick(10)
         pygame.display.set_caption(f"Treasure game (FPS={clock.get_fps()})")
 
 

@@ -76,12 +76,10 @@ class Player:
 
 
     def _handle_falling(self):
-        self._tick += 1                     
-
         # Player falls 3 of 4 ticks (compared to enemies which fall faster)
-        if self._tick % 4 == 0:
+        if (self._tick / 2) % 4 == 0:
             return
-                         
+
         self._pos = self._pos.below()
 
 
@@ -95,7 +93,12 @@ class Player:
         
 
     def update(self, screen):
-        self._update_position()
+        self._tick += 1                     
+
+        # Player moves twice slower than the arrow
+        if self._tick % 2 == 0: 
+            self._update_position()
+
         self._handle_arrows(screen)
 
         screen.blit(self._block_player, (self._pos.x*CELL_WIDTH, self._pos.y*CELL_HEIGHT))
