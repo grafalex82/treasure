@@ -153,7 +153,7 @@ class Game:
         # Bricks are destroyed 1 degree on arrow hits
         if self._game[pos.x][pos.y] >= BLOCK_BRICK and self._game[pos.x][pos.y] <= BLOCK_BRICK_BROKEN2:
             self._game[pos.x][pos.y] += 1
-            self._destroyed_bricks[pos] = 20    # TODO Put correct number of ticks here
+            self._destroyed_bricks[pos] = 250 if self._game[pos.x][pos.y] == BLOCK_BRICK_BROKEN3 else 60
             return True
 
         return False
@@ -187,7 +187,7 @@ class Game:
                 else:
                     self._game[pos.x][pos.y] += +1
 
-                self._destroyed_bricks[pos] = 20    # TODO Put the correct value here
+                self._destroyed_bricks[pos] = 60
 
 
 
