@@ -72,7 +72,7 @@ class Enemy:
             self._move(self._pos.right())
         elif player_pos.x < self._pos.x and self._can_move(self._pos.left()):
             self._move(self._pos.left())
-        # Try matchinf Y position next]
+        # Try matching Y position next]
         elif player_pos.y < self._pos.y and self._can_move(self._pos.above()):
             self._move(self._pos.above())
         elif player_pos.y > self._pos.y and self._can_move(self._pos.below()):

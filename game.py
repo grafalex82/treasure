@@ -211,7 +211,16 @@ class Game:
         
 
     def is_game_over(self):
-        return self.get_block_type(self._player.get_pos()) == BLOCK_WATER
+        # Die when player falls into a water
+        if self.get_block_type(self._player.get_pos()) == BLOCK_WATER:
+            return True
+        
+        # Die when player is caught by enemy
+        for e in self._enemies:
+            if self._player.get_pos() == e.get_pos():
+                return True
+            
+        return False
 
 
     def is_player_reached_exit(self):
