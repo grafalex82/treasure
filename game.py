@@ -19,6 +19,10 @@ BLOCK_TREASURE      = 0x08
 BLOCK_LCK_DOOR_LEFT = 0x09
 BLOCK_LCK_DOOR_RIGHT= 0x0a
 BLOCK_BRICK         = 0x0b
+BLOCK_BRICK_BROKEN1 = 0x0c
+BLOCK_BRICK_BROKEN2 = 0x0d
+BLOCK_BRICK_RESTOR1 = 0x0f
+BLOCK_BRICK_RESTOR2 = 0x10
 BLOCK_DOOR_OPEN     = 0x11
 BLOCK_REWARD        = 0x12
 
@@ -45,6 +49,8 @@ class Game:
         self._block_empty8 = pygame.image.load(f"{resources_dir}/block_empty8.png")
         self._block_empty9 = pygame.image.load(f"{resources_dir}/block_empty9.png")
         self._block_brick = pygame.image.load(f"{resources_dir}/block_brick.png")
+        self._block_brick2 = pygame.image.load(f"{resources_dir}/block_brick2.png")
+        self._block_brick3 = pygame.image.load(f"{resources_dir}/block_brick3.png")
         self._concrete_empty = pygame.image.load(f"{resources_dir}/block_concrete.png")
         self._ladder_empty = pygame.image.load(f"{resources_dir}/block_ladder.png")
         self._block_water = pygame.image.load(f"{resources_dir}/block_water.png")
@@ -67,12 +73,12 @@ class Game:
             (self._block_treasure,   True),     # 08            
             (self._block_door_left,  False),    # 09
             (self._block_door_right, False),    # 0a
-            (self._block_brick,      False),    # 0b
-            (None,                   True),     # 0c
-            (None,                   True),     # 0d
-            (self._block_empty2,     True),     # 0e
-            (None,                   True),     # 0f
-            (None,                   True),     # 10
+            (self._block_brick,      False),    # 0b        Full brick
+            (self._block_brick2,     False),    # 0b        Partially damaged (still blocking)
+            (self._block_brick3,     False),    # 0b        Partially damaged (still blocking)
+            (self._block_empty2,     True),     # 0e        Fully destroyed brick (non-blocking)
+            (self._block_brick3,     True),     # 0f        Partially restored (non-blocking)
+            (self._block_brick2,     True),     # 10        Partially restored (non-blocking)
             (self._block_door_open,  True),     # 11
             (self._block_reward,     True),     # 12
             (None,                   True),     # 13
@@ -135,8 +141,13 @@ class Game:
         if self._game[pos.x][pos.y] == BLOCK_CONCRETE:
             return True
         
+        # Bricks are destroyed 1 degree on arrow hits
+        if self._game[pos.x][pos.y] >= BLOCK_BRICK and self._game[pos.x][pos.y] <= BLOCK_BRICK_BROKEN2:
+            self._game[pos.x][pos.y] += 1
+            return True
 
         return False
+
 
     def _handle_treasures(self):
         pos = self._player.get_pos()
